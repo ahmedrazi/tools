@@ -1,0 +1,26 @@
+def login():
+    user = input("Enter Username:")
+    passwd = getpass.getpass(prompt="Enter Password:")
+    port = 22
+    #localuser = input("Enter local username:")
+    #localpwd = getpass.getpass(prompt="Enter local password:")
+
+    iplist = open("cp.txt")
+
+    for line in iplist:
+        host = line.strip("\n")
+        # print("Host List", host)
+        try:
+            print("Establishing connection with user: " + user + " on ip: " + host)
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(host, port, user, passwd)
+
+            print("Connected to.." + host)
+        #     print("Connected..")
+
+        except Exception as e:
+            print("Can't Connect to the " + host)
+            print("Failure Message:" + str(e))
+            continue
+login()
